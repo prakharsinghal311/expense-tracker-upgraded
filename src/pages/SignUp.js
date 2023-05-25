@@ -53,6 +53,7 @@ const SignUp = () => {
       })
       .then((data) => {
         // cartCtx.login(data.idToken);
+        localStorage.setItem("token", data.idToken);
         navigate("/dummy");
         console.log("User has successfully signed up");
       })
