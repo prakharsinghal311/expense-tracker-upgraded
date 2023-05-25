@@ -1,11 +1,14 @@
 import classes from "./DummyScreen.module.css";
-import { NavLink } from "react-router-dom";
-// import {use}
+import { NavLink, useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-";
 
 const DummyScreen = () => {
-  // const logoutHandler = () => {
+  const navigate = useNavigate();
 
-  // }
+  const logoutHandler = () => {
+    navigate("/");
+    localStorage.removeItem("token");
+  };
 
   const emailVerifyButtonHandler = () => {
     fetch(
@@ -45,6 +48,7 @@ const DummyScreen = () => {
 
   return (
     <>
+      <button onClick={logoutHandler}>Logout</button>
       <h1>welcome to expense tracker</h1>
       <button onClick={emailVerifyButtonHandler}>Verify Email Id</button>
       <h2 className={classes.box}>
