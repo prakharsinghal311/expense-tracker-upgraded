@@ -11,6 +11,10 @@ const SignUp = () => {
 
   const [isLogin, setIsLogin] = useState(true);
 
+  const forgotPasswordHandler = () => {
+    navigate("/forgotPassword");
+  };
+
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
@@ -80,6 +84,13 @@ const SignUp = () => {
           />
         </div>
         <div className={classes.actions}>
+          <button
+            type="button"
+            className={classes.toggle}
+            onClick={forgotPasswordHandler}
+          >
+            {"forgot password"}
+          </button>
           <button>{isLogin ? "Login" : "create Account"}</button>
           <button
             type="button"
