@@ -1,12 +1,54 @@
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 
 const UpdateProfile = () => {
   const nameInputRef = useRef();
   const photoUrlInputRef = useRef();
 
+  const [name, setName] = useState();
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState();
+  //   let name;
+  //   let profilePhotoUrl;
+
+  useEffect(() => {
+    fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyCPwBCQDNr1GtiZGAb5aeQwEW7-gWC5oVM",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          idToken: localStorage.getItem("token"),
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        if (res.ok) {
+          //localStorage.setItem("email", enteredEmail);
+          //const i = 0;
+          return res.json();
+        } else {
+          return res.json().then((data) => {
+            let errorMessage = "Authentication failed!";
+            throw new Error(errorMessage);
+          });
+        }
+      })
+      .then((data) => {
+        //   cartCtx.login(data.idToken);
+        //   navigate("/");
+        setName(data.users[0].displayName);
+        setProfilePhotoUrl(data.users[0].photoUrl);
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  }, []);
+
   const submitHandler = (e) => {
     e.preventDefault();
 
+    console.log(`${localStorage.getItem("token")}`);
     const enteredName = nameInputRef.current.value;
     const enteredPhotoUrl = photoUrlInputRef.current.value;
 
@@ -15,9 +57,11 @@ const UpdateProfile = () => {
       {
         method: "POST",
         body: JSON.stringify({
+          idToken: `${localStorage.getItem("token")}`,
           displayName: enteredName,
           photoUrl: enteredPhotoUrl,
-          idToken: localStorage.getItem("token"),
+          deleteAttribute: [],
+          returnSecureToken: true,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -51,11 +95,16 @@ const UpdateProfile = () => {
         <label id="fullName">
           <h3>Full Name</h3>
         </label>
-        <input type="text" id="fullName" ref={nameInputRef} />
+        <input type="text" id="fullName" ref={nameInputRef} value={name} />
         <label id="photoUrl">
           <h3>Profile Photo Url</h3>
         </label>
-        <input type="text" id="photoUrl" ref={photoUrlInputRef} />
+        <input
+          type="text"
+          id="photoUrl"
+          ref={photoUrlInputRef}
+          value={profilePhotoUrl}
+        />
         <button type="submit">Update</button>
       </form>
     </>
