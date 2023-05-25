@@ -1,13 +1,12 @@
 import classes from "./SignUp.module.css";
 import { useState, useRef } from "react";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 //import CartContext from "../store/cart-context";
 
 const SignUp = () => {
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
-
   //const cartCtx = useContext(CartContext);
 
   const [isLogin, setIsLogin] = useState(true);
@@ -54,7 +53,7 @@ const SignUp = () => {
       })
       .then((data) => {
         // cartCtx.login(data.idToken);
-        // navigate("/");
+        navigate("/dummy");
         console.log("User has successfully signed up");
       })
       .catch((err) => {
