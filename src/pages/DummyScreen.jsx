@@ -1,6 +1,5 @@
 import classes from "./DummyScreen.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
-//import { useNavigate } from "react-";
 
 const DummyScreen = () => {
   const navigate = useNavigate();
@@ -27,7 +26,6 @@ const DummyScreen = () => {
       .then((res) => {
         if (res.ok) {
           console.log(res);
-          //localStorage.setItem("email", enteredEmail);
           return res.json();
         } else {
           return res.json().then((data) => {
@@ -37,13 +35,15 @@ const DummyScreen = () => {
         }
       })
       .then((data) => {
-        //   cartCtx.login(data.idToken);
-        //   navigate("/");
         console.log(data);
       })
       .catch((err) => {
         alert(err.message);
       });
+  };
+
+  const expenseHandler = () => {
+    navigate("/addingExpenses");
   };
 
   return (
@@ -55,6 +55,7 @@ const DummyScreen = () => {
         your profile is incomplete.
         <NavLink to="/updateProfile">Complete Now</NavLink>
       </h2>
+      <button onClick={expenseHandler}>Add Expenses</button>
     </>
   );
 };

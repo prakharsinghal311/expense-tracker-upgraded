@@ -5,6 +5,7 @@ import Layout from "./components/layout/Layout";
 import DummyScreen from "./pages/DummyScreen";
 import UpdateProfile from "./pages/UpdateProfile";
 import ForgotPassword from "./pages/ForgotPassword";
+import AddingExpenses from "./pages/AddingExpenses";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/dummy" element={<DummyScreen />} />
         <Route path="/updateProfile" element={<UpdateProfile />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/addingExpenses" element={<AddingExpenses />} />
       </Routes>
     </BrowserRouter>
   );
