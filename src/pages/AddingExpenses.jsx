@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const AddingExpenses = () => {
   const [expenseAmount, setExpenseAmount] = useState();
@@ -17,9 +18,52 @@ const AddingExpenses = () => {
     setCategory(e.target.value);
   };
 
+  //let expenseId;
+
   const submitHandler = (e) => {
     e.preventDefault();
+
+    const expenseData = {
+      price: expenseAmount,
+      expenseTitle: description,
+      category: category,
+    };
+
+    axios
+      .post(
+        `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses.json`,
+        expenseData
+      )
+      .then((response) => {
+        //console.log(response);
+        const expenseId = response.data.name;
+        console.log(expenseId);
+        localStorage.setItem("expenseId", expenseId);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  //console.log(expenseId);
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses/${localStorage.getItem(
+          "expenseId"
+        )}.json`
+      )
+      .then((response) => {
+        console.log(response);
+        setCategory(response.data.category);
+        setExpenseAmount(response.data.price);
+        setDescription(response.data.expenseTitle);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <>
