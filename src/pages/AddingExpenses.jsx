@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import DisplayExpense from "./DisplayExpense";
 
 const AddingExpenses = () => {
   const [expenseAmount, setExpenseAmount] = useState();
   const [description, setDescription] = useState();
   const [category, setCategory] = useState();
+  const [expenses, setExpenses] = useState([]);
 
   const expenseAmountHandler = (e) => {
     setExpenseAmount(e.target.value);
@@ -17,8 +19,6 @@ const AddingExpenses = () => {
   const categoryHandler = (e) => {
     setCategory(e.target.value);
   };
-
-  //let expenseId;
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -35,35 +35,87 @@ const AddingExpenses = () => {
         expenseData
       )
       .then((response) => {
-        //console.log(response);
         const expenseId = response.data.name;
-        console.log(expenseId);
         localStorage.setItem("expenseId", expenseId);
+        axios
+          .get(
+            `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses.json`
+          )
+          .then((response) => {
+            setExpenses(response.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  //console.log(expenseId);
-
   useEffect(() => {
     axios
       .get(
-        `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses/${localStorage.getItem(
-          "expenseId"
-        )}.json`
+        `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses.json`
       )
       .then((response) => {
-        console.log(response);
-        setCategory(response.data.category);
-        setExpenseAmount(response.data.price);
-        setDescription(response.data.expenseTitle);
+        setExpenses(response.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+  const deleteHandler = (id) => {
+    axios
+      .delete(
+        `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses/${id}.json`
+      )
+      .then((response) => {
+        axios
+          .get(
+            `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses.json`
+          )
+          .then((response) => {
+            setExpenses(response.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  console.log(expenses);
+
+  const editHandler = (id, price, expenseTitle, category) => {
+    axios
+      .delete(
+        `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses/${id}.json`
+      )
+      .then((response) => {
+        setExpenseAmount(price);
+        setDescription(expenseTitle);
+        setCategory(category);
+        console.log(expenses);
+        axios
+          .get(
+            `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses.json`
+          )
+          .then((response) => {
+            setExpenses(response.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        console.log(expenses);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <>
@@ -73,24 +125,37 @@ const AddingExpenses = () => {
           type="number"
           id="expenseAmount"
           onChange={expenseAmountHandler}
+          value={expenseAmount}
         ></input>
         <label id="description">Description</label>
         <input
           type="text"
           id="description"
           onChange={descriptionHandler}
+          value={description}
         ></input>
         <label id="category">Category</label>
-        <select id="category" onChange={categoryHandler}>
+        <select id="category" onChange={categoryHandler} value={category}>
           <option>Food</option>
           <option>Petrol</option>
           <option>Salary</option>
         </select>
         <button type="submit">submit</button>
       </form>
-      <h3>{expenseAmount}</h3>
-      <h3>{description}</h3>
-      <h3>{category}</h3>
+      {Object.entries(expenses).map(([key, value], index) => {
+        return (
+          <DisplayExpense
+            expenseIndex={index}
+            key={Math.random()}
+            id={key}
+            price={value.price}
+            expenseTitle={value.expenseTitle}
+            category={value.category}
+            deleteExpense={deleteHandler}
+            editExpense={editHandler}
+          />
+        );
+      })}
     </>
   );
 };
