@@ -6,7 +6,7 @@ const Layout = () => {
   return (
     <>
       <Navbar bg="dark" expand="sm" variant="dark">
-        <Container>
+        <Container className={classes.header}>
           <Navbar.Brand className={classes.links}>
             <NavLink activeclassname={classes.active} to="/home">
               Home

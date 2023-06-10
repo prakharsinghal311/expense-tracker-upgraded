@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import classes from "./DummyScreen.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -9,6 +10,10 @@ const DummyScreen = () => {
     localStorage.removeItem("token");
   };
 
+  const token = useSelector((state) => state.auth.idTokens);
+  //console.log(token);
+  //console.log(localStorage.getItem("token"));
+
   const emailVerifyButtonHandler = () => {
     fetch(
       "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyCPwBCQDNr1GtiZGAb5aeQwEW7-gWC5oVM",
@@ -16,7 +21,8 @@ const DummyScreen = () => {
         method: "POST",
         body: JSON.stringify({
           requestType: "VERIFY_EMAIL",
-          idToken: localStorage.getItem("token"),
+          //idToken: localStorage.getItem("token"),
+          idToken: token,
         }),
         headers: {
           "Content-Type": "application/json",

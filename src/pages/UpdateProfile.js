@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const UpdateProfile = () => {
   const nameInputRef = useRef();
@@ -6,8 +7,8 @@ const UpdateProfile = () => {
 
   const [name, setName] = useState();
   const [profilePhotoUrl, setProfilePhotoUrl] = useState();
-  //   let name;
-  //   let profilePhotoUrl;
+
+  const token = useSelector((state) => state.auth.idTokens);
 
   useEffect(() => {
     fetch(
@@ -15,7 +16,8 @@ const UpdateProfile = () => {
       {
         method: "POST",
         body: JSON.stringify({
-          idToken: localStorage.getItem("token"),
+          //idToken: localStorage.getItem("token"),
+          idToken: token,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -48,7 +50,6 @@ const UpdateProfile = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    console.log(`${localStorage.getItem("token")}`);
     const enteredName = nameInputRef.current.value;
     const enteredPhotoUrl = photoUrlInputRef.current.value;
 
@@ -57,7 +58,8 @@ const UpdateProfile = () => {
       {
         method: "POST",
         body: JSON.stringify({
-          idToken: `${localStorage.getItem("token")}`,
+          idToken: `${token}`,
+          //idToken: `${localStorage.getItem("token")}`,
           displayName: enteredName,
           photoUrl: enteredPhotoUrl,
           deleteAttribute: [],

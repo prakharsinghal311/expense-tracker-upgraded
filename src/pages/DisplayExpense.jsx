@@ -1,4 +1,10 @@
+// import { useDispatch } from "react-redux";
+// import { expenseActions } from "../store/expense";
+
 const DisplayExpense = (props) => {
+  //const dispatch = useDispatch();
+  //dispatch(expenseActions.expenseAmount(props.price));
+
   return (
     <h3>
       {props.price} . {props.expenseTitle} . {props.category}

@@ -1,12 +1,19 @@
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import DisplayExpense from "./DisplayExpense";
+import { expenseActions } from "../store/expense";
 
 const AddingExpenses = () => {
+  const dispatch = useDispatch();
   const [expenseAmount, setExpenseAmount] = useState();
   const [description, setDescription] = useState();
   const [category, setCategory] = useState();
   const [expenses, setExpenses] = useState([]);
+  const [flag, setFlag] = useState(false);
+  //const [flag2, setFlag2] = useState(false);
+  // const [expenseIds, setExpenseIds] = useState();
+  //const [totalExpenseAmount, setTotalExpenseAmount] = useState(0);
 
   const expenseAmountHandler = (e) => {
     setExpenseAmount(e.target.value);
@@ -23,11 +30,28 @@ const AddingExpenses = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
+    //setFlag2(true);
+    //console.log(expenses);
+    //console.log(expenseAmount);
+
+    //let totalExpenseAmount = 0;
+
+    // setTotalExpenseAmount(
+    //   (totalExpenseAmount) =>
+    //totalExpenseAmount =
+    //parseInt(expenses.totalExpenseAmount) + parseInt(expenseAmount);
+    //);
+
+    //console.log(totalExpenseAmount);
+
     const expenseData = {
       price: expenseAmount,
       expenseTitle: description,
       category: category,
+      //totalExpenseAmount: totalExpenseAmount,
     };
+
+    //console.log(expenseIds);
 
     axios
       .post(
@@ -35,18 +59,39 @@ const AddingExpenses = () => {
         expenseData
       )
       .then((response) => {
+        // console.log(response.data.name);
+        // setExpenseIds(response.data.name);
+        // console.log(expenseIds);
+
         const expenseId = response.data.name;
+        console.log(expenseId);
         localStorage.setItem("expenseId", expenseId);
-        axios
-          .get(
-            `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses.json`
-          )
-          .then((response) => {
-            setExpenses(response.data);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+
+        // console.log(expenses);
+        // Object.assign(expenses, { [expenseId]: expenseData });
+        // console.log(expenses);
+
+        dispatch(expenseActions.addExpense({ [expenseId]: expenseData }));
+
+        // axios
+        //   .get(
+        //     `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses.json`
+        //   )
+        //   .then((response) => {
+        //     let totalAmount = 0;
+        //     console.log(totalAmount);
+        //     Object.values(response.data).forEach(
+        //       (value) =>
+        //         (totalAmount = parseInt(totalAmount) + parseInt(value.price))
+        //     );
+        //     console.log(totalAmount);
+        //     dispatch(expenseActions.expenseAmount(totalAmount));
+        //     dispatch(expenseActions.updateExpense(response.data));
+        //     setExpenses(response.data);
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //   });
       })
       .catch((err) => {
         console.log(err);
@@ -59,7 +104,18 @@ const AddingExpenses = () => {
         `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses.json`
       )
       .then((response) => {
+        let totalAmount = 0;
+        console.log(totalAmount);
+        Object.values(response.data).forEach(
+          (value) =>
+            (totalAmount = parseInt(totalAmount) + parseInt(value.price))
+        );
+        console.log(totalAmount);
+        dispatch(expenseActions.expenseAmount(totalAmount));
+        dispatch(expenseActions.updateExpense(response.data));
+        //dispatch(expenseActions.expenseAmount());
         setExpenses(response.data);
+        //console.log(response.data);
       })
       .catch((err) => {
         console.log(err);
@@ -67,16 +123,36 @@ const AddingExpenses = () => {
   }, []);
 
   const deleteHandler = (id) => {
+    // //setFlag2(true);
+    // //delete expenses.id;
+    // console.log(id);
+    // console.log(expenses);
+    // //setExpenses((expenses) => expenses.filter((i) => i[id] !== id));
+    // //setExpenses((current) => delete current.id);
+    // setExpenses(delete expenses.id);
+    // console.log(expenses);
+    // //setExpenses((expenses) => delete expenses.id);
     axios
       .delete(
         `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses/${id}.json`
       )
       .then((response) => {
+        // console.log(id);
+        // dispatch(expenseActions.removeExpense(id));
         axios
           .get(
             `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses.json`
           )
           .then((response) => {
+            let totalAmount = 0;
+            console.log(totalAmount);
+            Object.values(response.data).forEach(
+              (value) =>
+                (totalAmount = parseInt(totalAmount) + parseInt(value.price))
+            );
+            console.log(totalAmount);
+            dispatch(expenseActions.expenseAmount(totalAmount));
+            dispatch(expenseActions.updateExpense(response.data));
             setExpenses(response.data);
           })
           .catch((err) => {
@@ -88,9 +164,10 @@ const AddingExpenses = () => {
       });
   };
 
-  console.log(expenses);
+  //console.log();
 
   const editHandler = (id, price, expenseTitle, category) => {
+    //setFlag2(true);
     axios
       .delete(
         `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses/${id}.json`
@@ -99,23 +176,51 @@ const AddingExpenses = () => {
         setExpenseAmount(price);
         setDescription(expenseTitle);
         setCategory(category);
-        console.log(expenses);
         axios
           .get(
             `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses.json`
           )
           .then((response) => {
+            let totalAmount = 0;
+            console.log(totalAmount);
+            Object.values(response.data).forEach(
+              (value) =>
+                (totalAmount = parseInt(totalAmount) + parseInt(value.price))
+            );
+            console.log(totalAmount);
+            dispatch(expenseActions.expenseAmount(totalAmount));
+            dispatch(expenseActions.updateExpense(response.data));
             setExpenses(response.data);
           })
           .catch((err) => {
             console.log(err);
           });
-        console.log(expenses);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const userExpenses = useSelector((state) => state.expense.expenses);
+
+  useEffect(() => {
+    //if (flag2 === true)
+    setExpenses(userExpenses);
+  }, [userExpenses]);
+
+  const finalExpenseAmount = useSelector(
+    (state) => state.expense.totalExpenseAmount
+  );
+
+  useEffect(() => {
+    if (finalExpenseAmount > 10000) {
+      setFlag(true);
+    } else {
+      setFlag(false);
+    }
+  }, [finalExpenseAmount]);
+
+  //console.log(finalExpenseAmount);
 
   return (
     <>
@@ -156,6 +261,12 @@ const AddingExpenses = () => {
           />
         );
       })}
+      <br />
+      <br></br>
+      <h3>
+        Total expense amount : {finalExpenseAmount}{" "}
+        {flag && <button>Activate Premium</button>}
+      </h3>
     </>
   );
 };
