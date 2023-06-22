@@ -7,9 +7,9 @@ const expenseSlice = createSlice({
   initialState: initialExpenseState,
   reducers: {
     addExpense(state, action) {
-      console.log(action.payload);
-      console.log(Object.keys(action.payload));
-      console.log(Object.values(action.payload));
+      //console.log(action.payload);
+      //console.log(Object.keys(action.payload));
+      //console.log(Object.values(action.payload));
       //state.expenses = state.expenses.push(action.payload);
       Object.assign(state.expenses, action.payload);
 
@@ -17,7 +17,7 @@ const expenseSlice = createSlice({
       //console.log(valueNumber[0].price);
       state.totalExpenseAmount =
         parseInt(state.totalExpenseAmount) + parseInt(valueNumber[0].price);
-      console.log(state.totalExpenseAmount);
+      //console.log(state.totalExpenseAmount);
 
       // state.expenses = {
       //   ...state.expenses,
@@ -42,18 +42,30 @@ const expenseSlice = createSlice({
       //     (state.totalExpenseAmount =
       //       parseInt(state.totalExpenseAmount) + parseInt(value.price))
       // );
-      console.log(state.totalExpenseAmount);
+      //console.log(state.totalExpenseAmount);
     },
     expenseAmount(state, action) {
       state.totalExpenseAmount = action.payload;
     },
+    removeExpenseAmount(state, action) {
+      //console.log(action.payload);
+      //console.log(state.totalExpenseAmount);
+      state.totalExpenseAmount =
+        parseInt(state.totalExpenseAmount) - parseInt(action.payload.price);
+      //console.log(state.totalExpenseAmount);
+      //delete state.expenses.action.payload;
+      // Object.keys(state.expenses).forEach((key) =>
+      //   key === action.payload ? delete state.expenses.key : {}
+      // );
+      // const userExpenses = { ...state.expenses };
+      // console.log(userExpenses);
+      //console.log(userExpenses.action.payload);
+      //console.log(state.expenses);
+    },
     // removeExpense(state, action) {
-    //   console.log(action.payload);
-    //   //delete state.expenses.action.payload;
-    //   Object.keys(state.expenses).forEach((key) =>
-    //     key === action.payload ? delete state.expenses.key : {}
-    //   );
     //   //console.log(state.expenses);
+    //   //console.log(action.payload);
+    //   // for(int i=0;i<)
     // },
   },
 });

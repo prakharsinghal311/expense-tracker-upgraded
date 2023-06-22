@@ -1,14 +1,13 @@
-/* .links {
+.links {
   margin-left: 2rem;
   margin-right: 2rem;
-} */
-
+}
 /* .Navbar a:active,
 .Navbar a.active {
   color: rgb(233, 154, 80);
 } */
 
-.header a {
+/* .header a {
   text-decoration: none;
   color: white;
   font-size: 1.25rem;
@@ -32,4 +31,4 @@
 .header button:active {
   background-color: #ffa600;
   border-color: #ffa600;
-}
+} */

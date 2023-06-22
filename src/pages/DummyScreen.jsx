@@ -54,14 +54,18 @@ const DummyScreen = () => {
 
   return (
     <>
-      <button onClick={logoutHandler}>Logout</button>
-      <h1>welcome to expense tracker</h1>
-      <button onClick={emailVerifyButtonHandler}>Verify Email Id</button>
-      <h2 className={classes.box}>
-        your profile is incomplete.
-        <NavLink to="/updateProfile">Complete Now</NavLink>
-      </h2>
-      <button onClick={expenseHandler}>Add Expenses</button>
+      <div className={classes.dummyScreen1}>
+        <button onClick={logoutHandler}>Logout</button>
+      </div>
+      <div className={classes.dummyScreen2}>
+        <h1>welcome to expense tracker</h1>
+        <button onClick={emailVerifyButtonHandler}>Verify Email Id</button>
+        <h2 className={classes.box}>
+          your profile is incomplete.
+          <NavLink to="/updateProfile">Complete Now</NavLink>
+        </h2>
+        <button onClick={expenseHandler}>Add Expenses</button>
+      </div>
     </>
   );
 };
