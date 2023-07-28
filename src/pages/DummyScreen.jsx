@@ -16,7 +16,7 @@ const DummyScreen = () => {
 
   const emailVerifyButtonHandler = () => {
     fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyCPwBCQDNr1GtiZGAb5aeQwEW7-gWC5oVM",
+      "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyCBbKp0ENaywVHn9ck3tL43AH9whSWoXPg",
       {
         method: "POST",
         body: JSON.stringify({

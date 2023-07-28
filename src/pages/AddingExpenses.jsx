@@ -42,11 +42,9 @@ const AddingExpenses = () => {
       category: category,
     };
 
-    console.log(expenseData);
-
     axios
       .post(
-        `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses${useremailid}.json`,
+        `https://expense-tracker-upgraded-default-rtdb.firebaseio.com/expenses${useremailid}.json`,
         expenseData
       )
       .then((response) => {
@@ -67,7 +65,7 @@ const AddingExpenses = () => {
   useEffect(() => {
     axios
       .get(
-        `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses${useremailid}.json`
+        `https://expense-tracker-upgraded-default-rtdb.firebaseio.com/expenses${useremailid}.json`
       )
       .then((response) => {
         let totalAmount = 0;
@@ -95,7 +93,7 @@ const AddingExpenses = () => {
 
     axios
       .delete(
-        `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses${useremailid}/${id}.json`
+        `https://expense-tracker-upgraded-default-rtdb.firebaseio.com/expenses${useremailid}/${id}.json`
       )
       .then((response) => {})
       .catch((err) => {
@@ -112,7 +110,7 @@ const AddingExpenses = () => {
 
     axios
       .delete(
-        `https://expense-tracker-10a55-default-rtdb.firebaseio.com/expenses${useremailid}/${id}.json`
+        `https://expense-tracker-upgraded-default-rtdb.firebaseio.com/expenses${useremailid}/${id}.json`
       )
       .then((response) => {
         setExpenseAmount(price);
@@ -152,8 +150,6 @@ const AddingExpenses = () => {
 
   const data1 = Object.entries(expenses);
 
-  console.log(data1);
-
   const data2 = [];
   const data3 = [];
   const data4 = [];
@@ -173,7 +169,6 @@ const AddingExpenses = () => {
 
   //console.log(data2);
   //console.log(data3);
-  console.log(data6);
 
   // //console.log(JSON.stringify(data1[0][1]));
 
@@ -187,11 +182,8 @@ const AddingExpenses = () => {
   }
 
   const downloadHandler = (a1) => {
-    //console.log(data1);
-    //console.log(a1.target);
     const blob = new Blob([makeCSV(data6)]);
     a1.target.href = URL.createObjectURL(blob);
-    //filesaver(a1)
   };
 
   return (
