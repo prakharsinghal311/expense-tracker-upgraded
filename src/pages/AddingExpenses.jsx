@@ -44,7 +44,7 @@ const AddingExpenses = () => {
 
     axios
       .post(
-        `https://expense-tracker-upgraded-default-rtdb.firebaseio.com/expenses${useremailid}.json`,
+        `https://expense-tracker7-9-23-default-rtdb.firebaseio.com/expenses${useremailid}.json`,
         expenseData
       )
       .then((response) => {
@@ -65,7 +65,7 @@ const AddingExpenses = () => {
   useEffect(() => {
     axios
       .get(
-        `https://expense-tracker-upgraded-default-rtdb.firebaseio.com/expenses${useremailid}.json`
+        `https://expense-tracker7-9-23-default-rtdb.firebaseio.com/expenses${useremailid}.json`
       )
       .then((response) => {
         let totalAmount = 0;
@@ -93,7 +93,7 @@ const AddingExpenses = () => {
 
     axios
       .delete(
-        `https://expense-tracker-upgraded-default-rtdb.firebaseio.com/expenses${useremailid}/${id}.json`
+        `https://expense-tracker7-9-23-default-rtdb.firebaseio.com/expenses${useremailid}/${id}.json`
       )
       .then((response) => {})
       .catch((err) => {
@@ -110,7 +110,7 @@ const AddingExpenses = () => {
 
     axios
       .delete(
-        `https://expense-tracker-upgraded-default-rtdb.firebaseio.com/expenses${useremailid}/${id}.json`
+        `https://expense-tracker7-9-23-default-rtdb.firebaseio.com/expenses${useremailid}/${id}.json`
       )
       .then((response) => {
         setExpenseAmount(price);
